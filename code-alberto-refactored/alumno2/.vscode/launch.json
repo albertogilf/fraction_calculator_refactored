@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/alberto/OneDrive/docencia/2023_2_cuatrimestre/GIBM_AED/practica_programacion_i_refactor/code-alberto-refactored/alumno2",
-      "program": "/home/alberto/OneDrive/docencia/2023_2_cuatrimestre/GIBM_AED/practica_programacion_i_refactor/code-alberto-refactored/alumno2/build/Debug/outDebug",
+      "cwd": "/home/alberto/repos/fraction_calculator_refactored/code-alberto-refactored/alumno2",
+      "program": "/home/alberto/repos/fraction_calculator_refactored/code-alberto-refactored/alumno2/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
