@@ -1,0 +1,107 @@
+Requisito completo: no utilizar excepciones. 
+Requisito inicial: no utilizar memoria dinámica. 
+
+Pregunta general y aclaración: memoria estática o dinámica?
+
+Es irrelevante para la interfaz, las funciones que ya reciben parámetros. Sólo cambiará el programa principal 
+que se encargará de hacer la reserva y liberación de memoria (si aplica)
+
+APLICACIÓN GENERAL. Creación de documentación y tests **según desarrollo la función de interés**
+
+1. Crear struct con nominador y denominador: 
+
+Creando una estructura, se facilita la organización del código. 
+
+    int numeradores[MAX_FRACCIONES];
+    int denominadores[MAX_FRACCIONES];
+
+    pasa a ser -> typedef fraccion fracciones[MAX_FRACCIONES];
+
+
+typedef struct Fraccion
+{
+    int numerador;
+    int denominador;
+} fraccion;
+
+Problema: Falta de cohesión en todas las funciones que son dependientes de una ED representando a una función. 
+
+Solución -> Refactorización de métodos. 
+
+2. Definición de funciones según enunciado:
+
+Importante: documentación 
+(vs comentario. Documentación obligatoria. Nota Alberto: Mostrar Copilot si se desea o en taller posterior programación con IAs.)
+
+Diseño, todos juntos: 
+
+- valorReal
+- simplificar 
+- sumar
+- restar
+- multiplicar
+- dividir
+
+
+Realidad: hay 5 funciones que no corresponden a función, es solo I/O...
+
+El nombre de estas funciones es:
+
+void inicializa
+void introduceFraccion(int numerador, int denominador, int numeradores[], int denominadores[], int* nFracciones);
+void eliminaFraccion(int posicion, int numeradores[], int denominadores[], int* nFracciones);
+int hayEspacio(int nFracciones);
+int hayFracciones(int nFracciones);
+
+
+
+Vamos a refactorizar: mover las funciones que no tienen que ver con fracciones y solo con I/O al programa principal..
+
+I- eliminación de funciones sin contenido semántico: inicializaFracciones (un solo uso, una inicialización a 0)
+
+
+II- Mover hayEspacio y hayFracciones a main.c (son relativas al programa principal, no al módulo de fracciones.)
+
+Además, ¿Es responsabilidad del módulo de funciones definir el máximo de funciones a utilizar? No lo parece, puesto que algunos programas utilizarán más o menos funciones. Pasar definición a main.c
+
+III- Cambiar muestraFraccion y muestraFracciones para que reciban tipo de dato Fraccion. 
+
+IV- eliminar las funciones que solo son un printf o reciben un entero. La función de tipo general es recibir entero, se comprueba valores fuera (o dentro en otra función.)
+
+V- Con esto, ya tenemos las funciones:
+
+int menu(); // descriptivo, se queda como esta
+fraccion getFraccionFromKeyboard(); 
+int getIntFromKeyboard();
+void muestraFraccion(fraccion f);
+void muestraFracciones(fraccion fracciones[], int nFracciones);
+
+Y nuestro programa será un conjunto de llamadas a estas funciones. 
+
+La funcion getFraccionFromKeyboard no acepta 0 en el denominador
+
+Continuamos: 
+
+3-  Eliminar funciones opcion1, opcion2, etc... 
+
+Opciones 1 a 4 ya son solo llamadas a las funciones abstraídas y definidas. 
+
+EXTRA- si se quiere, aniadir funcion que devuelva una fraccion a partir del indice
+fraccion getFraccionFromIndex(fraccion fracciones[], int nFracciones, int index)
+Se debe comprobar que index esta entre 0 y nFracciones... y en C no hay excepciones, así que mejor no hacer esta función.
+
+EXTRA- MAX_RUTA_ARCHIVO nunca se utiliza -> eliminar. 
+
+Ahora, hay que cambiar las opciones 5 a 10. Para ello, refactorizar funciones de fraccion.h y fraccion.c
+
+simplifica pasa a recibir solo una fracción
+
+El resto trabaja sobre una función resultado. Nuevas definiciones:
+
+float valorReal(fraccion f);
+fraccion simplifica(fraccion f);
+fraccion sumaFracciones(fraccion f1, fraccion f2);
+fraccion restaFracciones(fraccion f1, fraccion f2);
+fraccion multiplicaFracciones(fraccion f1, fraccion f2);
+fraccion divideFracciones(fraccion f1, fraccion f2);
+
